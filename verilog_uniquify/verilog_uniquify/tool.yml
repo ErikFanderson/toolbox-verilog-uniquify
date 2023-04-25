@@ -1,0 +1,22 @@
+# Name must match the class name in __init__.py
+tool: UniquifyTool
+namespace: uniquify
+
+# Dictionary containing all properties/attributes required by the tool
+properties:
+  top_cell:
+    description: "Top cell name"
+    default: null
+    schema: "str()"
+  file:
+    description: "File to be uniquified"
+    default: null
+    schema: "file()"
+  file_type:
+    description: "Determines type of file to be uniquified"
+    default: null
+    schema: "enum('cdl', 'verilog')"
+  out_dir:
+    description: "Output directory"
+    default: null 
+    schema: "str(required=False)"
