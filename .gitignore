@@ -1,0 +1,14 @@
+__pycache__/
+.mypy_cache/
+build/
+build.sim/
+*.log
+*.jou
+*.swp
+*.pyc
+.simvision/
+xcelium.d/
+xcelium.shm/
+*.history
+.Xil/
+*.prof
