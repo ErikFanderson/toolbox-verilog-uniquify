@@ -20,3 +20,7 @@ properties:
     description: "Output directory"
     default: null 
     schema: "str(required=False)"
+  omitted_cells:
+    description: "Cells to NOT uniquify (this generally shouldn't be used)"
+    default: []
+    schema: "list(str())"

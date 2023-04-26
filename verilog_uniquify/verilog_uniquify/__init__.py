@@ -49,22 +49,35 @@ class UniquifyTool(Tool):
         """Function for cdl uniquifying"""
         # Compile SUBCKT REGEX
         re_sub = re.compile(".SUBCKT\s(\w+)[\w\s]+")
+        
         # Determine SUBCKTS
         with open(in_file, 'r') as fp:
             data = fp.read()
+        
         # Figure out subckts
         m_sub = re_sub.findall(data)
+        
         # Remove top name from subckt list
         try:
             m_sub.remove(self.uni["top_cell"])
         except ValueError:
             self.log(
                 f'Top Cell "{self.uni["top"]}" not found as subckt in file.')
+        
+        # Remove ommitted cells from subckt list
+        for cell in self.uni['ommitted_cells']:
+            try:
+                m_sub.remove(cell)
+            except ValueError:
+                self.log(
+                    f'Ommitted Cell "{cell}" not found as subckt in file.')
+        
         # Search and replace all subckt names with f"{top}_"
         for sub in m_sub:
             re_inst = re.compile(r"\b(" + sub + r")\b")
             data = re_inst.sub(self.uni["top_cell"] + r'_\1', data)
             self.log(f'Replaced "{sub}" with "{self.uni["top_cell"]}_{sub}"')
+        
         # Write to new file
         with open(out_file, 'w') as fp:
             fp.write(data)
@@ -76,22 +89,35 @@ class UniquifyTool(Tool):
         """Function for uniquifying verilog file"""
         # Compile SUBCKT REGEX
         re_sub = re.compile("module ([\w]+)")
+        
         # Determine SUBCKTS
         with open(in_file, 'r') as fp:
             data = fp.read()
+        
         # Figure out subckts
         m_sub = re_sub.findall(data)
+        
         # Remove top name from subckt list
         try:
             m_sub.remove(self.uni["top_cell"])
         except ValueError:
             self.log(
                 f'Top Cell "{self.uni["top"]}" not found as module in file.')
+        
+        # Remove ommitted cells from subckt list
+        for cell in self.uni['ommitted_cells']:
+            try:
+                m_sub.remove(cell)
+            except ValueError:
+                self.log(
+                    f'Ommitted Cell "{cell}" not found as module in file.')
+        
         # Search and replace all subckt names with f"{top}_"
         for sub in m_sub:
             re_inst = re.compile(r"\b(" + sub + r")\b")
             data = re_inst.sub(self.uni["top_cell"] + r'_\1', data)
             self.log(f'Replaced "{sub}" with "{self.uni["top_cell"]}_{sub}"')
+        
         # Write to new file
         with open(out_file, 'w') as fp:
             fp.write(data)
